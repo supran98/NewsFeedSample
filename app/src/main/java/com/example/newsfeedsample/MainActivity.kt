@@ -1,53 +1,75 @@
 package com.example.newsfeedsample
 
-import android.hardware.input.InputManager
-import androidx.appcompat.app.AppCompatActivity
+import android.annotation.SuppressLint
 import android.os.Bundle
-import android.view.Menu
-import android.view.inputmethod.InputMethodManager
-import android.widget.SearchView
-import android.widget.Toast
-import androidx.core.view.GravityCompat
-import androidx.drawerlayout.widget.DrawerLayout
-import androidx.navigation.NavController
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
-import com.example.newsfeedsample.databinding.ActivityMainBinding
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.*
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.navigation.compose.rememberNavController
+import com.example.newsfeedsample.ui.*
+import com.example.newsfeedsample.ui.navigation.NavGraph
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MainActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityMainBinding
-    private lateinit var drawer: DrawerLayout
-    private lateinit var appBarConfiguration: AppBarConfiguration
-    private lateinit var navController: NavController
+@ExperimentalComposeUiApi
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+class MainActivity : ComponentActivity() {
+    @Inject
+    lateinit var viewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        appComponent.inject(this)
+        viewModel.getTopHeadlines("ru", "general")
 
-        drawer = binding.drawerLayout
-        navController = findNavController(R.id.fragmentContainerView)
-        appBarConfiguration = AppBarConfiguration(navController.graph, drawer)
-        binding.navView.setupWithNavController(navController)
-        setupActionBarWithNavController(navController, appBarConfiguration)
+        setContent {
+            val navController = rememberNavController()
+            val scaffoldState = rememberScaffoldState()
+            val scope = rememberCoroutineScope()
+            val keyboardController = LocalSoftwareKeyboardController.current
 
-        binding.navView.setNavigationItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.politics_menu_item -> NewsFragment.category.value = "politics"
-                R.id.sports_menu_item -> NewsFragment.category.value = "sports"
-                R.id.lifestyle_menu_item -> NewsFragment.category.value = "lifestyle"
-                R.id.technology_menu_item -> NewsFragment.category.value = "technology"
+            Scaffold(
+                scaffoldState = scaffoldState,
+                modifier = Modifier.fillMaxSize(),
+                topBar = {
+                    NewsAppBar(
+                        searchQuery = viewModel.searchWidgetTextState.value,
+                        onQueryChanged = {
+                            viewModel.updateSearchWidgetTextState(it)
+                        },
+                        appBarState = viewModel.appBarState.value,
+                        onSearchTriggered = {
+                            viewModel.updateAppBarState(AppBarState.SEARCH_OPENED)
+                        },
+                        onSearchClosed = {
+                            viewModel.updateAppBarState(AppBarState.SEARCH_CLOSED)
+                        },
+                        onSearchClicked = { searchQuery ->
+                            viewModel.getNews(searchQuery)
+                            keyboardController?.hide()
+                        },
+                        onNavigationIconClicked = {
+                            scope.launch {
+                                scaffoldState.drawerState.open()
+                            }
+                        }
+                    )
+                },
+                drawerContent = {
+                    NavDrawer(onClickItem = { category ->
+                        scope.launch { scaffoldState.drawerState.close() }
+                        viewModel.getTopHeadlines("ru", category)
+                    })
+                },
+                drawerGesturesEnabled = scaffoldState.drawerState.isOpen
+            ) {
+                NavGraph(navController = navController, viewModel = viewModel)
             }
-            drawer.closeDrawer(GravityCompat.START)
-            true
         }
-    }
-
-    override fun onSupportNavigateUp(): Boolean {
-        val controller = findNavController(R.id.fragmentContainerView)
-        return  controller.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 }
