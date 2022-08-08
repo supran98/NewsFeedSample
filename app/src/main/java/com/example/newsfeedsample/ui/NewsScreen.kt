@@ -17,6 +17,7 @@ import androidx.paging.compose.items
 import androidx.paging.compose.itemsIndexed
 import coil.compose.AsyncImage
 import com.example.newsfeedsample.MainViewModel
+import com.example.newsfeedsample.model.Article
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 
@@ -34,24 +35,35 @@ fun NewsScreen(
         ) {
             itemsIndexed(articles) { index, article ->
                 if (article != null) {
-                    AsyncImage(
-                        model = article.urlToImage,
-                        contentDescription = "article #$index",
-                        modifier = Modifier.fillMaxWidth()
+                    ArticleItem(
+                        article = article,
+                        index = index,
+                        onClick = {
+                            val encodedUrl = URLEncoder.encode(article.url, StandardCharsets.UTF_8.toString())
+                            navController.navigate(Screens.ArticleScreen.passUrl(encodedUrl))
+                        }
                     )
-                    Text(
-                        text = article.title,
-                        fontSize = 20.sp,
-                        modifier = Modifier
-                            .clickable {
-                                val encodedUrl = URLEncoder.encode(article.url, StandardCharsets.UTF_8.toString())
-                                navController.navigate(Screens.ArticleScreen.passUrl(encodedUrl))
-                            }
-                            .testTag("article #$index")
-                    )
-                    Spacer(modifier = Modifier.height(30.dp))
                 }
             }
         }
     }
+}
+
+@Composable
+fun ArticleItem(article: Article, index: Int, onClick: () -> Unit) {
+    AsyncImage(
+        model = article.urlToImage,
+        contentDescription = "article #$index",
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onClick.invoke() }
+    )
+    Text(
+        text = article.title,
+        fontSize = 20.sp,
+        modifier = Modifier
+            .clickable { onClick.invoke() }
+            .testTag("article #$index")
+    )
+    Spacer(modifier = Modifier.height(30.dp))
 }
