@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.navigation.compose.rememberNavController
 import com.example.newsfeedsample.ui.*
-import com.example.newsfeedsample.ui.navigation.NavGraph
+import com.example.newsfeedsample.ui.navigation.HostScreen
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -68,7 +68,7 @@ class MainActivity : ComponentActivity() {
                 },
                 drawerGesturesEnabled = scaffoldState.drawerState.isOpen
             ) {
-                NavGraph(navController = navController, viewModel = viewModel)
+                HostScreen(navController = navController, viewModel = viewModel)
             }
         }
     }

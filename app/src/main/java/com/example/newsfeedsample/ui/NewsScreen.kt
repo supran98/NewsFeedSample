@@ -8,11 +8,13 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
+import androidx.paging.compose.itemsIndexed
 import coil.compose.AsyncImage
 import com.example.newsfeedsample.MainViewModel
 import java.net.URLEncoder
@@ -27,12 +29,14 @@ fun NewsScreen(
     val articles = viewModel.uiState.value.collectAsLazyPagingItems()
 
     Scaffold {
-        LazyColumn {
-            items(articles) { article ->
+        LazyColumn(
+            modifier = Modifier.testTag("NewsList")
+        ) {
+            itemsIndexed(articles) { index, article ->
                 if (article != null) {
                     AsyncImage(
                         model = article.urlToImage,
-                        contentDescription = null,
+                        contentDescription = "article #$index",
                         modifier = Modifier.fillMaxWidth()
                     )
                     Text(
@@ -43,6 +47,7 @@ fun NewsScreen(
                                 val encodedUrl = URLEncoder.encode(article.url, StandardCharsets.UTF_8.toString())
                                 navController.navigate(Screens.ArticleScreen.passUrl(encodedUrl))
                             }
+                            .testTag("article #$index")
                     )
                     Spacer(modifier = Modifier.height(30.dp))
                 }

@@ -11,7 +11,7 @@ import com.example.newsfeedsample.ui.NewsScreen
 import com.example.newsfeedsample.ui.Screens
 
 @Composable
-fun NavGraph(
+fun HostScreen(
     navController: NavHostController,
     viewModel: MainViewModel
 ) {

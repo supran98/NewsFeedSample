@@ -14,6 +14,7 @@ android {
         versionCode 1
         versionName "1.0"
 
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField 'String', 'API_KEY', '"2327a0e7d3634d0898f99928b09c57a5"'
 
         buildFeatures {
@@ -56,6 +57,18 @@ dependencies {
     implementation "androidx.constraintlayout:constraintlayout-compose:$compose_version"
     // compose web-view
     implementation "com.google.accompanist:accompanist-webview:0.24.11-rc"
+
+    // testing
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
+    // kakao
+    androidTestImplementation 'com.agoda.kakao:kakao:2.1.0-support'
+    androidTestImplementation "io.github.kakaocup:compose:0.0.8"
+
+    kaptTest 'com.google.dagger:dagger-compiler:2.38.1'
+    kaptAndroidTest 'com.google.dagger:dagger-compiler:2.38.1'
 
     // Coil
     implementation("io.coil-kt:coil-compose:2.1.0")
