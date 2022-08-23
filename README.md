@@ -1,4 +1,5 @@
 # NewsFeedSample
 Simple client for NewsApi
 
-![news_v2](https://user-images.githubusercontent.com/70762556/183424501-9609ebed-d768-4bfd-9215-f872587dec32.png)
+
+![news_v2-1](https://user-images.githubusercontent.com/70762556/186272423-efaa2aae-baed-4001-b935-662cd46a8349.png)
