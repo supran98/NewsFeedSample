@@ -4,7 +4,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import com.example.newsfeedsample.MainActivity
 import com.example.newsfeedsample.MainViewModel
 import com.example.newsfeedsample.api.NewsService
-import com.example.newsfeedsample.respository.Repository
+import com.example.newsfeedsample.repository.Repository
 import dagger.Component
 import dagger.Module
 import dagger.Provides

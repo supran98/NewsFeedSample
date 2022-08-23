@@ -1,4 +1,4 @@
-package com.example.newsfeedsample.respository
+package com.example.newsfeedsample.repository
 
 import com.example.newsfeedsample.api.ApiHandler
 import com.example.newsfeedsample.api.NewsService

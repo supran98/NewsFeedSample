@@ -9,7 +9,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.example.newsfeedsample.model.Article
 import com.example.newsfeedsample.paging.NewsPagingSource
-import com.example.newsfeedsample.respository.Repository
+import com.example.newsfeedsample.repository.Repository
 import com.example.newsfeedsample.ui.AppBarState
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject

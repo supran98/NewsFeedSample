@@ -131,13 +131,3 @@ fun DefaultAppBar(
         }
     )
 }
-
-//title = {
-//    Text(text = "News")
-//},
-//navigationIcon = {
-//    Icon(
-//        imageVector = Icons.Default.Menu,
-//        contentDescription = null
-//    )
-//}

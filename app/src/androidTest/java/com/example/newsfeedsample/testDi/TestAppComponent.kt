@@ -7,7 +7,7 @@ import com.example.newsfeedsample.api.NewsService
 import com.example.newsfeedsample.mock.emptyMockResponse
 import com.example.newsfeedsample.mock.mockResponseData
 import com.example.newsfeedsample.model.ResponseData
-import com.example.newsfeedsample.respository.Repository
+import com.example.newsfeedsample.repository.Repository
 import com.example.newsfeedsample.tests.ItemsNotRepeatingTest
 import com.example.newsfeedsample.tests.SavingPageStateTest
 import dagger.Component

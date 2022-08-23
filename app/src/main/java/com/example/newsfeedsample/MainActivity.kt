@@ -47,7 +47,11 @@ class MainActivity : ComponentActivity() {
                             viewModel.updateAppBarState(AppBarState.SEARCH_OPENED)
                         },
                         onSearchClosed = {
-                            viewModel.updateAppBarState(AppBarState.SEARCH_CLOSED)
+                            if (viewModel.searchWidgetTextState.value.isNotEmpty()) {
+                                viewModel.updateSearchWidgetTextState("")
+                            } else {
+                                viewModel.updateAppBarState(AppBarState.SEARCH_CLOSED)
+                            }
                         },
                         onSearchClicked = { searchQuery ->
                             viewModel.getNews(searchQuery)
